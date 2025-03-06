@@ -1,7 +1,7 @@
 ﻿
-static double GetAvarage(int[] arr) 
+static double GetAvarage(int[] arrChangedName) 
 {
-    return (double) arr.Sum()/arr.Length;
+    return (double) arrChangedName.Sum()/arrChangedName.Length;
 }
 
 static int GetMaxValue(int[] arr)
