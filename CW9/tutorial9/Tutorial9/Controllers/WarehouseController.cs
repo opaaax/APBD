@@ -51,5 +51,20 @@ public class WarehouseController : ControllerBase
         int returnId = await _productsWarehouseService.PostProductWarehouse(productsWarehouseDto, doesOrderExists.Value.IdOrder);
         return Created("", returnId);
     }
+
+    [HttpPost("/procedure")]
+    public async Task<IActionResult> CreateWarehouseProcedure(ProductsWarehouseDTO productsWarehouseDto)
+    {
+        int returnId;
+        try
+        {
+            returnId = await _productsWarehouseService.PostProductWarehouseProcedure(productsWarehouseDto);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+        return Created("",returnId);
+    }
        
 }

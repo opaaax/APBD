@@ -1,3 +1,4 @@
+using System.Data;
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using Tutorial9.Model.DTOs;
@@ -58,7 +59,26 @@ public class ProductsWarehouseService : IProductsWarehouseService
             await transaction.RollbackAsync();
             throw;
         }
+    }
+
+    public async Task<int> PostProductWarehouseProcedure(ProductsWarehouseDTO productsWarehouse)
+    {
+        await using SqlConnection connection = new SqlConnection(_connectionString);
+        await using SqlCommand command = new SqlCommand();
         
+        command.Connection = connection;
+        await connection.OpenAsync();
+        
+        command.CommandText = "AddProductToWarehouse";
+        command.CommandType = CommandType.StoredProcedure;
+        
+        command.Parameters.AddWithValue("@IdWarehouse", productsWarehouse.IdWarehouse);
+        command.Parameters.AddWithValue("@IDProduct", productsWarehouse.IdProduct);
+        command.Parameters.AddWithValue("@Amount", productsWarehouse.Amount);
+        command.Parameters.AddWithValue("@CreatedAt", productsWarehouse.CreatedAt);
+
+        int returnId = (int)await command.ExecuteScalarAsync();
+        return returnId;
     }
 
     public async Task<bool> DoesWarehouseExist(int id)
